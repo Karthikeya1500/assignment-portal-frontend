@@ -20,7 +20,7 @@ function Register() {
     e.preventDefault();
     setError("");
 
-    // client-side validation
+
     if (!name.trim() || !email.trim() || !password.trim()) {
       setError("All fields are required.");
       return;

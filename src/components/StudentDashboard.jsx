@@ -15,14 +15,14 @@ function StudentDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // submit modal
-  const [submitModal, setSubmitModal] = useState(null); // holds assignment obj
+
+  const [submitModal, setSubmitModal] = useState(null);
   const [answerText, setAnswerText] = useState("");
   const [file, setFile] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
-  // view modal
-  const [viewModal, setViewModal] = useState(null); // holds submission obj
+
+  const [viewModal, setViewModal] = useState(null);
 
   useEffect(() => {
     if (!user) {

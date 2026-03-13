@@ -16,7 +16,7 @@ function TeacherDashboard() {
   const [error, setError] = useState(null);
   const [tab, setTab] = useState("All");
 
-  // modals
+
   const [createOpen, setCreateOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [subsOpen, setSubsOpen] = useState(false);
@@ -129,7 +129,7 @@ function TeacherDashboard() {
   async function markReviewed(assignmentId, subId) {
     try {
       await axios.put(`${API}/${assignmentId}/submissions/${subId}/review`, {}, { headers });
-      // refresh the submissions list in modal
+
       const { data } = await axios.get(`${API}/${assignmentId}/submissions`, { headers });
       setSubmissions(data);
     } catch {
@@ -150,7 +150,7 @@ function TeacherDashboard() {
     Completed: assignments.filter((a) => a.status === "Completed").length,
   };
 
-  // dashboard analytics
+
   const totalSubmissions = assignments.reduce((s, a) => s + (a.submissionCount || 0), 0);
 
   return (
