@@ -3,7 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-const API = "http://localhost:5001/api/assignments";
+const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
+const API = `${BACKEND_URL}/api/assignments`;
 
 function TeacherDashboard() {
   const navigate = useNavigate();
@@ -626,7 +627,7 @@ function TeacherDashboard() {
                         )}
                         {sub.fileUrl && (
                           <a
-                            href={`http://localhost:5001${sub.fileUrl}`}
+                            href={`${BACKEND_URL}${sub.fileUrl}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 text-primary rounded-md text-xs font-medium hover:bg-primary/20 transition-colors"

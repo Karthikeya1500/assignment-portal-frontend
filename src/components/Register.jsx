@@ -2,7 +2,8 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
-const API_URL = "http://localhost:5001/api/auth";
+const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
+const API_URL = `${BACKEND_URL}/api/auth`;
 
 function Register() {
   const navigate = useNavigate();
