@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1e3fae;
+  --color-background-light: #f6f6f8;
+  --font-display: "Lexend", sans-serif;
+}
