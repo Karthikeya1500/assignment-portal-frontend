@@ -113,9 +113,16 @@ function Login() {
             disabled={loading}
             className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-3 px-4 rounded-lg shadow-md shadow-primary/10 transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
           >
-            {loading ? "Signing in..." : "Sign In"}
-            {!loading && (
-              <span className="material-symbols-outlined text-lg">arrow_forward</span>
+            {loading ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Signing in...
+              </>
+            ) : (
+              <>
+                Sign In
+                <span className="material-symbols-outlined text-lg">arrow_forward</span>
+              </>
             )}
           </button>
         </form>

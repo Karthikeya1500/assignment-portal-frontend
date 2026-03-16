@@ -159,9 +159,16 @@ function Register() {
             disabled={loading}
             className="w-full mt-2 bg-primary hover:bg-primary/90 text-white font-semibold py-3 px-4 rounded-lg shadow-md shadow-primary/10 transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
           >
-            {loading ? "Creating Account..." : "Create Account"}
-            {!loading && (
-              <span className="material-symbols-outlined text-lg">person_add</span>
+            {loading ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Creating Account...
+              </>
+            ) : (
+              <>
+                Create Account
+                <span className="material-symbols-outlined text-lg">person_add</span>
+              </>
             )}
           </button>
         </form>

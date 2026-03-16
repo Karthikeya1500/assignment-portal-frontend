@@ -1,14 +1,44 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => {
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
-    const name = localStorage.getItem("name");
-    return token ? { token, role, name } : null;
-  });
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
+
+  /* Verify token on mount */
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const role = localStorage.getItem("role");
+        const name = localStorage.getItem("name");
+
+        if (token) {
+          /* Verify token is still valid by making a request to backend */
+          await axios.get(`${BACKEND_URL}/api/auth/verify`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          setUser({ token, role, name });
+        }
+      } catch (err) {
+        console.error("Token verification failed:", err);
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        localStorage.removeItem("name");
+        setUser(null);
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    verifyToken();
+  }, [BACKEND_URL]);
 
   /* keep localStorage in sync whenever user state changes */
   useEffect(() => {
@@ -28,7 +58,7 @@ export function AuthProvider({ children }) {
   const logout = () => setUser(null);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );
