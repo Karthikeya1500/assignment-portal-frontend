@@ -19,14 +19,28 @@ export function AuthProvider({ children }) {
         const name = localStorage.getItem("name");
 
         if (token) {
-          /* Verify token is still valid by making a request to backend */
-          await axios.get(`${BACKEND_URL}/api/auth/verify`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
+          try {
+            /* Try to verify token is still valid by making a request to backend */
+            await axios.get(`${BACKEND_URL}/api/auth/verify`, {
+              headers: { Authorization: `Bearer ${token}` },
+              timeout: 5000,
+            });
+          } catch (verifyErr) {
+            /* If verification endpoint doesn't exist or backend is unavailable,
+               trust the token if it exists locally (offline mode) */
+            if (verifyErr.response?.status === 404 || !verifyErr.response) {
+              console.warn("Backend verification unavailable, using stored token");
+              setUser({ token, role, name });
+              setIsLoading(false);
+              return;
+            }
+            /* For 401/403 errors, token is invalid */
+            throw verifyErr;
+          }
           setUser({ token, role, name });
         }
       } catch (err) {
-        console.error("Token verification failed:", err);
+        console.error("Token verification failed:", err.message);
         localStorage.removeItem("token");
         localStorage.removeItem("role");
         localStorage.removeItem("name");
